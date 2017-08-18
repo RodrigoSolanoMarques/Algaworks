@@ -21,6 +21,12 @@
 
         <!-- Versão do Maven  -->
         <maven-compiler-pluging.version>3.2</maven-compiler-pluging.version>
+
+        <!-- Spring MVC -->
+        <spring-framework.version>4.3.10.RELEASE</spring-framework.version>
+
+        <!-- Servelet API -->
+        <servlet.version>3.1.0</servlet.version>
     </properties>
 
     <build>
@@ -35,6 +41,35 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring-framework.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <!-- Spring MVC -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <!-- Servelet API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servelet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>

@@ -27,6 +27,9 @@
 
         <!-- Servelet API -->
         <servlet.version>3.1.0</servlet.version>
+
+        <!-- Thymeleaf -->
+        <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
     </properties>
 
     <build>
@@ -65,11 +68,26 @@
         <!-- Servelet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>javax.servelet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.version}</version>
             <scope>provided</scope>
         </dependency>
-    </dependencies>
 
+
+        <!-- Thymeleaf -->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>${thymeleaf.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring4</artifactId>
+            <version>${thymeleaf.version}</version>
+        </dependency>
+
+
+    </dependencies>
 
 </project>

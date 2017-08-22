@@ -1,7 +1,11 @@
 package com.algaworks.brewer.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class Cerveja {
 
+    @NotBlank
     private String sku;
     private String nome;
 

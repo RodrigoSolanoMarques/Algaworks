@@ -22,7 +22,7 @@ public class CervejasController {
     public String cadastrar(@Valid Cerveja cerveja, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("mensagem", "Erro ao salvar cerveja!");
+            model.addAttribute("mensagem", "Erro ao salvar cerveja!"+ bindingResult.toString());
             return "cerveja/CadastroCerveja";
         }
 

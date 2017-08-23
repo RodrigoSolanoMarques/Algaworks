@@ -14,16 +14,16 @@ import javax.validation.Valid;
 public class CervejasController {
 
     @RequestMapping("/cervejas/novo")
-    public String novo() {
+    public String novo(Cerveja cerveja) {
         return "cerveja/CadastroCerveja";
     }
 
     @RequestMapping(value = "/cervejas/novo", method = RequestMethod.POST)
-    public String cadastrar(@Valid Cerveja cerveja, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
+    public String cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes) {
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("mensagem", "Erro ao salvar cerveja!"+ bindingResult.toString());
-            return "cerveja/CadastroCerveja";
+        if (result.hasErrors()) {
+
+            return novo(cerveja);
         }
 
         attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");

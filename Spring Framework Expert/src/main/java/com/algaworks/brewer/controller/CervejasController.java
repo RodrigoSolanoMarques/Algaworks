@@ -1,6 +1,8 @@
 package com.algaworks.brewer.controller;
 
 import com.algaworks.brewer.model.Cerveja;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,8 @@ import javax.validation.Valid;
 @Controller
 public class CervejasController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CervejasController.class);
+
     @RequestMapping("/cervejas/novo")
     public String novo(Cerveja cerveja) {
         return "cerveja/CadastroCerveja";
@@ -22,7 +26,6 @@ public class CervejasController {
     public String cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes) {
 
         if (result.hasErrors()) {
-
             return novo(cerveja);
         }
 

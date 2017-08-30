@@ -22,6 +22,16 @@
         <!-- Versão do Maven  -->
         <maven-compiler-pluging.version>3.2</maven-compiler-pluging.version>
 
+        <!-- Flyway -->
+        <flyway-maven-plugin.version>4.0.2</flyway-maven-plugin.version>
+
+        <!-- MySQL -->
+        <mysql-connector-java.version>5.1.43</mysql-connector-java.version>
+        <user>root</user>
+        <password>root</password>
+
+        <!-- =================================================================================== -->
+
         <!-- Spring MVC -->
         <spring-framework.version>4.3.10.RELEASE</spring-framework.version>
 
@@ -53,6 +63,18 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway-maven-plugin.version}</version>
+                <configuration>
+                    <driver>com.mysql.jdbc.Driver</driver>
+                    <user>${user}</user>
+                    <password>${password}</password>
+                    <url>jdbc:mysql://localhost:3306/brewer</url>
                 </configuration>
             </plugin>
         </plugins>
@@ -160,6 +182,14 @@
             <artifactId>hibernate-java8</artifactId>
             <version>${hibernate.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- MySQL Driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

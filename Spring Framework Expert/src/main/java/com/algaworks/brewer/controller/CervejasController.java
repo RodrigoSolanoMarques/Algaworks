@@ -5,6 +5,7 @@ import com.algaworks.brewer.model.Origem;
 import com.algaworks.brewer.model.Sabor;
 import com.algaworks.brewer.repository.Cervejas;
 import com.algaworks.brewer.repository.Estilos;
+import com.algaworks.brewer.service.CadastroCervejaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class CervejasController {
     @Autowired
     private Estilos estilos;
 
+    @Autowired
+    private CadastroCervejaService cadastroCervejaService;
+
     private static final Logger logger = LoggerFactory.getLogger(CervejasController.class);
 
     @RequestMapping("/cervejas/novo")
@@ -41,14 +45,12 @@ public class CervejasController {
     @RequestMapping(value = "/cervejas/novo", method = RequestMethod.POST)
     public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes) {
 
-//        if (result.hasErrors()) {
-//            return novo(cerveja);
-//        }
+        if (result.hasErrors()) {
+            return novo(cerveja);
+        }
 
+        cadastroCervejaService.salvar(cerveja);
         attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
-        System.out.println(cerveja.getSku());
-        System.out.println(cerveja.getSabor());
-        System.out.println(cerveja.getOrigem());
         return new ModelAndView("redirect:/cervejas/novo");
     }
 

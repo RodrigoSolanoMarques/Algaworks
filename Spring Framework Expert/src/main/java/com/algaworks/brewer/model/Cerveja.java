@@ -4,8 +4,7 @@ import com.algaworks.brewer.validation.SKU;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -17,31 +16,42 @@ public class Cerveja {
     private Long codigo;
 
     @SKU
-    @NotBlank(message = "SKU é obrigatório")
+    @NotBlank(message = "O 'SKU' é obrigatório")
     private String sku;
 
-    @NotBlank(message = "Nome é obrigatório")
+    @NotBlank(message = "O 'Nome' é obrigatório")
     private String nome;
 
-    @Size(min = 1, max = 50, message = "O tamanho da descrição deve estar entre 1 e 50.")
+    @NotBlank(message = "A 'Descrição' é obrigatória")
+    @Size(max = 50, message = "O tamanho da descrição deve estar entre 1 e 50.")
     private String descricao;
 
+    @NotNull(message = "O 'Valor' é obrigatório")
+    @DecimalMin(value = "0.50", message = "O valor da cerveja deve ser maior que R$0,50")
+    @DecimalMax(value = "9999999.99", message = "O valor da cerveja deve ser menor que R$9.999.999,99")
     private BigDecimal valor;
 
+    @NotNull(message = "O 'Teor Alcóolico' é obrigatório")
+    @DecimalMax(value = "99.99", message = "O valor do teor aalcóolico deve ser menor que 100%")
     @Column(name = "teor_alcoolico")
     private BigDecimal teorAlcoolico;
 
+    @DecimalMax(value = "100.0", message = "A comissão deve ser igual ou menor que 100%")
     private BigDecimal comissao;
 
+    @Max(value = 9999, message = "A quantidade em estoque deve ser menor que 9.999")
     @Column(name = "quantidade_estoque")
     private Integer quantidadeEstoque;
 
+    @NotNull(message = "A 'Origem' é obrigatória")
     @Enumerated(EnumType.STRING)
     private Origem origem;
 
+    @NotNull(message = "O 'Sabor' é obrigatório")
     @Enumerated(EnumType.STRING)
     private Sabor sabor;
 
+    @NotNull(message = "O 'Estilo' é obrigatório")
     @ManyToOne
     @JoinColumn(name = "codigo_estilo")
     private Estilo estilo;

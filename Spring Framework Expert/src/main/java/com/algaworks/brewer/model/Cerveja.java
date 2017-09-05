@@ -1,8 +1,10 @@
 package com.algaworks.brewer.model;
 
+import com.algaworks.brewer.validation.SKU;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -14,6 +16,7 @@ public class Cerveja {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
 
+    @SKU
     @NotBlank(message = "SKU é obrigatório")
     private String sku;
 

@@ -1,6 +1,9 @@
 package com.algaworks.brewer.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,6 +15,8 @@ public class Estilo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
 
+    @NotBlank(message = "O nome do estilo é obrigatório")
+    @Size(max = 15, message = "O tamanho do nome do estilo deve estar entre 1 e 15")
     private String nome;
 
     @OneToMany(mappedBy = "estilo")

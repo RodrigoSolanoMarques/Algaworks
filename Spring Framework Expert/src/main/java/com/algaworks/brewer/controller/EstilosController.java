@@ -3,6 +3,7 @@ package com.algaworks.brewer.controller;
 import com.algaworks.brewer.model.Estilo;
 import com.algaworks.brewer.service.CadastroCervejaService;
 import com.algaworks.brewer.service.CadastroEstiloService;
+import com.algaworks.brewer.service.exception.NomeEstiloJaCadastradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,24 +17,29 @@ import javax.validation.Valid;
 
 
 @Controller
-public class EstiloController {
+public class EstilosController {
 
     @Autowired
     private CadastroEstiloService cadastroEstiloService;
 
     @RequestMapping("/estilos/novo")
-    private ModelAndView novo(Estilo estilo){
+    private ModelAndView novo(Estilo estilo) {
         return new ModelAndView("estilo/CadastroEstilo");
     }
 
     @RequestMapping(value = "/estilos/novo", method = RequestMethod.POST)
-    private ModelAndView cadastrar(@Valid Estilo estilo, BindingResult result, Model model, RedirectAttributes attributes){
+    private ModelAndView cadastrar(@Valid Estilo estilo, BindingResult result, Model model, RedirectAttributes attributes) {
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return novo(estilo);
         }
 
-        cadastroEstiloService.salvar(estilo);
+        try {
+            cadastroEstiloService.salvar(estilo);
+        } catch (NomeEstiloJaCadastradoException e) {
+            result.rejectValue("nome", e.getMessage(), e.getMessage());
+            return novo(estilo);
+        }
         attributes.addFlashAttribute("mensagem", "Estilo salvo com sucesso!");
         return new ModelAndView("redirect:/estilos/novo");
     }

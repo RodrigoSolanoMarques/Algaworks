@@ -22,10 +22,9 @@
 
     <div class="container-fluid">
 
-        <th:block th:include="fragments/MensagemSucesso"></th:block>
 
         <form method="POST" th:object="${cerveja}" class="form-vertical  js-form-loading">
-            <th:block th:include="fragments/MensagensErroValidacao"></th:block>
+            <brewer:message/>
 
             <div class="row">
                 <div class="col-sm-2 form-group" brewer:classforerror="sku">
@@ -62,7 +61,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-3 form-group"brewer:classforerror="sabor">
+                <div class="col-sm-3 form-group" brewer:classforerror="sabor">
                     <label for="sabor" class="control-label">Sabor</label>
                     <select id="sabor" type="text" class="form-control" th:field="*{sabor}">
                         <option value="">Selecione o sabor</option>

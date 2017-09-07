@@ -57,6 +57,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
         engine.addDialect(new LayoutDialect());
         engine.addDialect(new BrewerDialect());
+        engine.addDialect(new BrewerDialect());
         return engine;
     }
 

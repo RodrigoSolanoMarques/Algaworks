@@ -51,17 +51,14 @@ public class EstilosController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody ResponseEntity<?> salvar(@RequestBody @Valid Estilo estilo, BindingResult result) {
+    public @ResponseBody
+    ResponseEntity<?> salvar(@RequestBody @Valid Estilo estilo, BindingResult result) {
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result.getFieldError("nome").getDefaultMessage());
         }
 
-        try{
-            estilo = cadastroEstiloService.salvar(estilo);
-        }catch (NomeEstiloJaCadastradoException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        estilo = cadastroEstiloService.salvar(estilo);
 
         return ResponseEntity.ok(estilo);
 

@@ -1,11 +1,9 @@
 package com.algaworks.brewer.controller;
 
 import com.algaworks.brewer.model.Estilo;
-import com.algaworks.brewer.service.CadastroCervejaService;
 import com.algaworks.brewer.service.CadastroEstiloService;
 import com.algaworks.brewer.service.exception.NomeEstiloJaCadastradoException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

@@ -22,17 +22,18 @@ import javax.validation.Valid;
 
 
 @Controller
+@RequestMapping("/estilos")
 public class EstilosController {
 
     @Autowired
     private CadastroEstiloService cadastroEstiloService;
 
-    @RequestMapping("/estilos/novo")
+    @RequestMapping("/novo")
     private ModelAndView novo(Estilo estilo) {
         return new ModelAndView("estilo/CadastroEstilo");
     }
 
-    @RequestMapping(value = "/estilos/novo", method = RequestMethod.POST)
+    @RequestMapping(value = "/novo", method = RequestMethod.POST)
     private ModelAndView cadastrar(@Valid Estilo estilo, BindingResult result, Model model, RedirectAttributes attributes) {
 
         if (result.hasErrors()) {
@@ -49,7 +50,7 @@ public class EstilosController {
         return new ModelAndView("redirect:/estilos/novo");
     }
 
-    @RequestMapping(value = "/estilos", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public @ResponseBody ResponseEntity<?> salvar(@RequestBody @Valid Estilo estilo, BindingResult result) {
 
         if (result.hasErrors()){

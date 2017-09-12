@@ -1,16 +1,24 @@
 package com.algaworks.brewer.controller;
 
+import com.algaworks.brewer.dto.FotoDTO;
+import com.algaworks.brewer.storage.FotoStorageRunnable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class FotosController {
 
     @PostMapping("/fotos")
-    public String upload(@RequestParam("files[]") MultipartFile[] files){
-        System.out.println(">>>>>> Files: " + files[0].getSize());
-        return "OK!";
+    public DeferredResult<FotoDTO> upload(@RequestParam("files[]") MultipartFile[] files) {
+
+        DeferredResult<FotoDTO> resultado = new DeferredResult<>();
+
+        Thread thread = new Thread(new FotoStorageRunnable(files, resultado));
+        thread.start();
+
+        return resultado;
     }
 }

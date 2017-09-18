@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -21,9 +22,17 @@ public class CervejasImpl implements CervejasQueries {
     @SuppressWarnings("unchecked")
     @Override
     @Transactional(readOnly = true)
-    public List<Cerveja> filtrar(CervejaFilter filtro) {
+    public List<Cerveja> filtrar(CervejaFilter filtro, Pageable pageable) {
 
         Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
+
+        int paginaAtual = pageable.getPageNumber();
+        int totalRegistrosPorPagina = pageable.getPageSize();
+        int primeiroRegistro = paginaAtual * totalRegistrosPorPagina;
+
+
+        criteria.setFirstResult(primeiroRegistro);
+        criteria.setMaxResults(totalRegistrosPorPagina);
 
         if (filtro != null) {
             if (!StringUtils.isEmpty(filtro.getSku())) {
@@ -38,19 +47,19 @@ public class CervejasImpl implements CervejasQueries {
                 criteria.add(Restrictions.eq("estilo", filtro.getEstilo()));
             }
 
-            if (filtro.getSabor() != null){
+            if (filtro.getSabor() != null) {
                 criteria.add(Restrictions.eq("sabor", filtro.getSabor()));
             }
 
-            if (filtro.getOrigem() != null){
+            if (filtro.getOrigem() != null) {
                 criteria.add(Restrictions.eq("origem", filtro.getOrigem()));
             }
 
-            if (filtro.getValorDe() != null){
+            if (filtro.getValorDe() != null) {
                 criteria.add(Restrictions.ge("valor", filtro.getValorDe()));
             }
 
-            if (filtro.getValorAte() != null){
+            if (filtro.getValorAte() != null) {
                 criteria.add(Restrictions.le("valor", filtro.getValorAte()));
             }
         }

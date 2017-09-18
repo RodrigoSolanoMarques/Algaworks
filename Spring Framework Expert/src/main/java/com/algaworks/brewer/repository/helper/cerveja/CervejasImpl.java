@@ -5,7 +5,11 @@ import com.algaworks.brewer.repository.filter.CervejaFilter;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -22,7 +26,7 @@ public class CervejasImpl implements CervejasQueries {
     @SuppressWarnings("unchecked")
     @Override
     @Transactional(readOnly = true)
-    public List<Cerveja> filtrar(CervejaFilter filtro, Pageable pageable) {
+    public Page<Cerveja> filtrar(CervejaFilter filtro, Pageable pageable) {
 
         Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
 
@@ -34,6 +38,20 @@ public class CervejasImpl implements CervejasQueries {
         criteria.setFirstResult(primeiroRegistro);
         criteria.setMaxResults(totalRegistrosPorPagina);
 
+        adicionarFiltro(filtro, criteria);
+
+        return new PageImpl<Cerveja>(criteria.list(), pageable, total(filtro));
+    }
+
+    private Long total(CervejaFilter filtro) {
+
+        Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
+        adicionarFiltro(filtro, criteria);
+        criteria.setProjection(Projections.rowCount());
+        return (Long) criteria.uniqueResult();
+    }
+
+    private void adicionarFiltro(CervejaFilter filtro, Criteria criteria) {
         if (filtro != null) {
             if (!StringUtils.isEmpty(filtro.getSku())) {
                 criteria.add(Restrictions.eq("sku", filtro.getSku()));
@@ -63,8 +81,6 @@ public class CervejasImpl implements CervejasQueries {
                 criteria.add(Restrictions.le("valor", filtro.getValorAte()));
             }
         }
-
-        return criteria.list();
     }
 
     private boolean isEstiloPresente(CervejaFilter filtro) {

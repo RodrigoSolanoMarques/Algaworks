@@ -111,7 +111,10 @@
                 <thead>
                 <tr>
                     <th class="table-cervejas-col-foto"></th>
-                    <th class="table-cervejas-col-sku">SKU</th>
+                    <th class="table-cervejas-col-sku">
+                        SKU
+                        <span th:class="dropup"><span th:class="caret"></span></span>
+                    </th>
                     <th class="table-cervejas-col-nome">Nome</th>
                     <th class="table-cervejas-col-estilo">Estilo</th>
                     <th class="table-cervejas-col-origem">Origem</th>
@@ -128,8 +131,7 @@
                     <td th:text="${cerveja.nome}">Cerveja Stella</td>
                     <td th:text="${cerveja.estilo.nome}">Lager</td>
                     <td th:text="${cerveja.origem.descricao}">Internacional</td>
-                    <td class="text-right" th:text="|R
-                    $ ${cerveja.valor}|">R$ 8.00
+                    <td class="text-right" th:text="|R$ ${cerveja.valor}|">R$ 8.00
                     </td>
                     <td class="text-center">
                         <a class="btn  btn-link  btn-xs" title="Editar">
@@ -150,7 +152,8 @@
             <nav>
                 <ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
                     <li th:class="${pagina.primeira} ? disabled">
-                        <a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+                        <a th:href="${pagina.urlParaPagina(paginaAtual - 1)}"
+                           th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
                     </li>
                     <th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p - 1}">
                         <li th:class="${paginaAtual == numeroPagina} ? active">
@@ -159,7 +162,7 @@
                     </th:block>
 
                     <li th:class="${pagina.ultima} ? disabled">
-                        <a th:href="${pagina.urlParaPagina(paginaAtual + 1)}"  th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+                        <a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
                     </li>
 
                 </ul>

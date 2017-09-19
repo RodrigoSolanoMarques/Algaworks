@@ -1,5 +1,6 @@
 package com.algaworks.brewer.controller;
 
+import com.algaworks.brewer.controller.page.PageWrapper;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.Origem;
 import com.algaworks.brewer.model.Sabor;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -65,15 +67,15 @@ public class CervejasController {
     }
 
     @GetMapping
-    public ModelAndView pesquisar(CervejaFilter cervejaFilter, BindingResult result, @PageableDefault(size = 2) Pageable pageable) {
+    public ModelAndView pesquisar(CervejaFilter cervejaFilter, BindingResult result, @PageableDefault(size = 2) Pageable pageable, HttpServletRequest httpServletRequest) {
 
         ModelAndView mv = new ModelAndView("cerveja/PesquisaCervejas");
         mv.addObject("sabores", Sabor.values());
         mv.addObject("estilos", estilos.findAll());
         mv.addObject("origens", Origem.values());
 
-        Page<Cerveja> pagina = cervejas.filtrar(cervejaFilter, pageable);
-        mv.addObject("pagina", pagina);
+        PageWrapper<Cerveja> paginaWrapper = new PageWrapper<>(cervejas.filtrar(cervejaFilter, pageable), httpServletRequest);
+        mv.addObject("pagina", paginaWrapper);
         return mv;
     }
 }

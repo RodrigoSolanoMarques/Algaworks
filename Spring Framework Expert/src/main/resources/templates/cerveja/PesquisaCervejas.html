@@ -112,11 +112,9 @@
                 <tr>
                     <th class="table-cervejas-col-foto"></th>
                     <th class="table-cervejas-col-sku">
-                        <!--<th:block th:replace="fragments/Ordenacao :: order (${pagina}, 'sku', 'SKU')"></th:block>-->
                         <brewer:order page="${pagina}" field="sku" text="SKU"/>
                     </th>
                     <th class="table-cervejas-col-nome">
-                        <!--<th:block th:replace="fragments/Ordenacao :: order (${pagina}, 'nome', 'NOME')"></th:block>-->
                         <brewer:order page="${pagina}" field="nome" text="NOME"/>
                     </th>
                     <th class="table-cervejas-col-estilo">Estilo</th>

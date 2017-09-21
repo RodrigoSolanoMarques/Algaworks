@@ -2,12 +2,14 @@ package com.algaworks.brewer.repository.helper.estilo;
 
 import com.algaworks.brewer.model.Estilo;
 import com.algaworks.brewer.repository.filter.EstiloFilter;
+import com.algaworks.brewer.repository.paginacao.PaginacaoUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,27 +25,18 @@ public class EstilosImpl implements EstilosQueries {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    private PaginacaoUtil paginacaoUtil;
+
 
     @Override
     @Transactional(readOnly = true)
     public Page<Estilo> filtrar(EstiloFilter filtro, Pageable pageable) {
 
         Criteria criteria = entityManager.unwrap(Session.class).createCriteria(Estilo.class);
-
-        int paginaAtual = pageable.getPageNumber();
-        int totalRegistrosPorPagina = pageable.getPageSize();
-        int primeiroRegistro = paginaAtual * totalRegistrosPorPagina;
-
-        criteria.setFirstResult(primeiroRegistro).setMaxResults(totalRegistrosPorPagina);
-
-        Sort sort = pageable.getSort();
-        if (sort != null){
-            Sort.Order order = sort.iterator().next();
-            String property = order.getProperty();
-            criteria.addOrder(order.isAscending() ? Order.asc(property) : Order.desc(property));
-        }
-
+        paginacaoUtil.preparar(criteria, pageable);
         adicionarFiltro(filtro, criteria);
+
         return new PageImpl<Estilo>(criteria.list(), pageable, total(filtro));
     }
 

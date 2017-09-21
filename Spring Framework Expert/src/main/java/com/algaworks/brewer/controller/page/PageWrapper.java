@@ -15,8 +15,15 @@ public class PageWrapper<T> {
 
     public PageWrapper(Page<T> page, HttpServletRequest httpServletRequest) {
         this.page = page;
-        this.uriBuilder = ServletUriComponentsBuilder.fromRequest(httpServletRequest);
+//        this.uriBuilder = ServletUriComponentsBuilder.fromRequest(httpServletRequest);
+        String httpUrl = httpServletRequest.getRequestURL().append(
+                httpServletRequest.getQueryString() != null
+                        ? "?"+httpServletRequest.getQueryString()
+                        : ""
+        ).toString().replaceAll("\\+","%20");
+        this.uriBuilder = UriComponentsBuilder.fromHttpUrl(httpUrl);
     }
+
 
     public List<T> getConteudo() {
         return page.getContent();

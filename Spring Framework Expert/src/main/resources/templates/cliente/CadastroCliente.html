@@ -36,7 +36,8 @@
                                 <input type="radio" th:id="|id_${tipoPessoa}|" name="tipoPessoa"
                                        class="js-radio-tipo-pessoa" data:documento="${tipoPessoa.documento}"
                                        data:mascara="${tipoPessoa.mascara}">
-                                <label class="control-label" th:for="|id_${tipoPessoa}|" th:text="${tipoPessoa.descricao}">Física</label>
+                                <label class="control-label" th:for="|id_${tipoPessoa}|"
+                                       th:text="${tipoPessoa.descricao}">Física</label>
                             </div>
 
                         </th:block>
@@ -88,6 +89,9 @@
                     <label class="control-label" for="estado">Estado</label>
                     <select id="estado" class="form-control">
                         <option value="">Selecione o estado</option>
+                        <option th:each="estado: ${estados}" th:value="${estado.codigo}"
+                                th:text="${estado.nome}"> Cidade
+                        </option>
                     </select>
                 </div>
 

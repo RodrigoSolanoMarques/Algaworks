@@ -3,7 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:data="http://www.thymeleaf.org/extras/data"
-      layout:decorate="~{layout/LayoutPadrao}">
+      layout:decorate="~{layout/LayoutPadrao}"
+      xmlns:brewer="http://brewer.algaworks.com">
 
 <head>
     <title>Cadastro de Cliente</title>
@@ -19,21 +20,24 @@
     </div>
 
     <div class="container-fluid">
-        <form>
+        <form method="POST" th:object="${cliente}" th:action="@{/clientes/novo}">
+            <brewer:message/>
+
             <div class="row">
-                <div class="form-group  col-sm-12 bw-required">
+                <div class="form-group  col-sm-12 bw-required" brewer:classforerror="nome">
                     <label for="nome" class="control-label">Nome</label>
-                    <input type="text" class="form-control" id="nome" autofocus="autofocus"/>
+                    <input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
                 </div>
             </div>
 
             <div class="row">
-                <div class="form-group col-sm-4 bw-required">
+                <div class="form-group col-sm-4 bw-required" brewer:classforerror="tipoPessoa">
                     <label class="control-label">Tipo pessoa</label>
                     <div>
                         <th:block th:each="tipoPessoa : ${tiposPessoa}">
                             <div class="radio  radio-inline">
-                                <input type="radio" th:id="|id_${tipoPessoa}|" name="tipoPessoa"
+                                <input type="radio" th:id="|id_${tipoPessoa}|" th:field="*{tipoPessoa}"
+                                       th:value="${tipoPessoa}"
                                        class="js-radio-tipo-pessoa" data:documento="${tipoPessoa.documento}"
                                        data:mascara="${tipoPessoa.mascara}">
                                 <label class="control-label" th:for="|id_${tipoPessoa}|"
@@ -44,50 +48,50 @@
                     </div>
                 </div>
 
-                <div class="form-group  col-sm-8 bw-required">
+                <div class="form-group  col-sm-8 bw-required" brewer:classforerror="cpfOuCnpj">
                     <label class="control-label" for="cpfOuCnpj">CPF/CNPJ</label>
-                    <input type="text" class="form-control" id="cpfOuCnpj" disabled=""/>
+                    <input type="text" class="form-control" id="cpfOuCnpj" th:field="*{cpfOuCnpj}" disabled/>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group  col-sm-4 bw-required">
                     <label class="control-label" for="telefone">Telefone</label>
-                    <input type="text" class="form-control js-phone-number" id="telefone"/>
+                    <input type="text" class="form-control js-phone-number" id="telefone" th:field="*{telefone}"/>
                 </div>
 
-                <div class="form-group  col-sm-8 bw-required">
+                <div class="form-group  col-sm-8 bw-required" brewer:classforerror="email">
                     <label class="control-label" for="email">E-mail</label>
-                    <input type="text" class="form-control" id="email"/>
+                    <input type="text" class="form-control" id="email" th:field="*{email}"/>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group  col-sm-4 bw-required">
                     <label class="control-label" for="logradouro">Logradouro</label>
-                    <input type="text" class="form-control" id="logradouro"/>
+                    <input type="text" class="form-control" id="logradouro" th:field="*{endereco.logradouro}"/>
                 </div>
 
                 <div class="form-group  col-sm-4 bw-required">
                     <label class="control-label" for="numero">Número</label>
-                    <input type="text" class="form-control" id="numero"/>
+                    <input type="text" class="form-control" id="numero" th:field="*{endereco.numero}"/>
                 </div>
 
                 <div class="form-group  col-sm-4">
                     <label for="complemento">Complemento</label>
-                    <input type="text" class="form-control" id="complemento"/>
+                    <input type="text" class="form-control" id="complemento" th:field="*{endereco.complemento}"/>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group  col-sm-4 bw-required">
                     <label class="control-label" for="cep">CEP</label>
-                    <input type="text" class="form-control js-cep" id="cep"/>
+                    <input type="text" class="form-control js-cep" id="cep" th:field="*{endereco.cep}"/>
                 </div>
 
                 <div class="form-group  col-sm-4 bw-required">
                     <label class="control-label" for="estado">Estado</label>
-                    <select id="estado" class="form-control">
+                    <select id="estado" class="form-control" th:field="*{endereco.estado}">
                         <option value="">Selecione o estado</option>
                         <option th:each="estado: ${estados}" th:value="${estado.codigo}"
                                 th:text="${estado.nome}"> Cidade
@@ -98,7 +102,8 @@
                 <div class="form-group  col-sm-4 bw-required">
                     <label class="control-label" for="cidade">Cidade</label>
                     <div class="bw-field-action">
-                        <select id="cidade" class="form-control" data:url="@{/cidades}" disabled>
+                        <input type="hidden" id="inputHiddenCidadeSelecionada" th:value="*{endereco.cidade} != null ? *{endereco.cidade.codigo}">
+                        <select id="cidade" class="form-control" data:url="@{/cidades}" th:field="*{endereco.cidade}" disabled>
 
                         </select>
                         <div class="bw-field-action__icon js-img-loading" style="display: none">

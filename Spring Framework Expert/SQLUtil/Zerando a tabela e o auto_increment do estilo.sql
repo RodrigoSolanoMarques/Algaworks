@@ -10,6 +10,10 @@ SELECT * FROM brewer.estado;
 
 SELECT * FROM brewer.cidade;
 
-delete from brewer.cerveja; 
+select * from brewer.cliente; 
 
 SELECT * from brewer.schema_version; 
+
+-- delete from brewer.cerveja; 
+
+

@@ -1,7 +1,7 @@
 SELECT * FROM brewer.estilo;
 
-delete from brewer.estilo where codigo > 4;
-alter table brewer.estilo auto_increment = 5;
+-- delete from brewer.estilo where codigo > 4;
+-- alter table brewer.estilo auto_increment = 5;
 
 
 SELECT * FROM brewer.cerveja;
@@ -15,5 +15,7 @@ select * from brewer.cliente;
 SELECT * from brewer.schema_version; 
 
 -- delete from brewer.cerveja; 
+
+delete from brewer.cliente where codigo > 0; 
 
 

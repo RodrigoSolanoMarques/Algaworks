@@ -4,6 +4,7 @@ import com.algaworks.brewer.model.Cliente;
 import com.algaworks.brewer.model.TipoPessoa;
 import com.algaworks.brewer.repository.Estados;
 import com.algaworks.brewer.service.CadastroClienteService;
+import com.algaworks.brewer.service.exception.CpfOuCnpjClienteJaCadastradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -45,7 +46,12 @@ public class ClientesController {
             return novo(cliente);
         }
 
-        cadastroClienteService.salvar(cliente);
+        try {
+            cadastroClienteService.salvar(cliente);
+        } catch (CpfOuCnpjClienteJaCadastradoException e) {
+            result.rejectValue("cpfOuCnpj", e.getMessage(), e.getMessage());
+            return novo(cliente);
+        }
         attributes.addFlashAttribute("mensagem", "Cliente salvo com sucesso!");
         return new ModelAndView("redirect:/clientes/novo");
     }

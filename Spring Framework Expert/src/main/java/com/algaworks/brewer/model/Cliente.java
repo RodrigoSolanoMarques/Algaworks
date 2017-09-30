@@ -44,9 +44,10 @@ public class Cliente implements Serializable {
     @Embedded
     private Endereco endereco;
 
-    @PrePersist @PreUpdate
-    private void prePesistPreUpdate(){
-        this.cpfOuCnpj = this.cpfOuCnpj.replaceAll("\\.|-|/","");
+    @PrePersist
+    @PreUpdate
+    private void prePesistPreUpdate() {
+        this.cpfOuCnpj = TipoPessoa.removerFormatacao(this.cpfOuCnpj);
     }
 
     @Override
@@ -119,5 +120,9 @@ public class Cliente implements Serializable {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public String getCpfOuCnpjSemFormatacao() {
+        return TipoPessoa.removerFormatacao(this.cpfOuCnpj);
     }
 }

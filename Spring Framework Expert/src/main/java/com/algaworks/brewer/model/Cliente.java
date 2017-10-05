@@ -50,6 +50,11 @@ public class Cliente implements Serializable {
         this.cpfOuCnpj = TipoPessoa.removerFormatacao(this.cpfOuCnpj);
     }
 
+    @PostLoad
+    private void postLoad(){
+        this.cpfOuCnpj = this.tipoPessoa.formatar(this.cpfOuCnpj);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

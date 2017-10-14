@@ -1,8 +1,10 @@
 package com.algaworks.brewer.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -13,9 +15,11 @@ public class Cidade implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long codigo;
 
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
 
+    @NotNull(message = "Estado é obrigatório")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "codigo_estado")
     @JsonIgnore

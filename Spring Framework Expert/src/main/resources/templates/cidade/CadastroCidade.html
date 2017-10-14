@@ -2,7 +2,8 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://wwww.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/LayoutPadrao}">
+      layout:decorate="~{layout/LayoutPadrao}"
+      xmlns:brewer="http://brewer.algaworks.com">
 
 <head>
     <title>Cadastro de Cidade</title>
@@ -11,29 +12,45 @@
 
     <div class="page-header">
         <div class="container-fluid">
-            <h1>Cadastro de Cidade</h1>
+
+            <div class="col-sm-10">
+                <h1> Cadastro de Cidade </h1>
+            </div>
+            <div class="col-sm-2">
+                <div class="aw-page-header-controls">
+                    <a class="btn btn-default" th:href="@{/cidades}">
+                        <i class="glyphicon glyphicon-plus-sign"></i> <span
+                            class="hidden-xs hidden-sm">Pesquisa</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="container-fluid">
 
-        <form>
+        <form method="POST" th:object="${cidade}" th:action="@{/cidades/nova}">
+            <brewer:message/>
+
             <div class="row">
-                <div class="col-sm-4 form-group bw-required">
-                    <label class="control-label">Estado</label>
-                    <select id="cidade" type="text" class="form-control">
-                        <option value=""> Selecione o estado</option>
+                <div class="col-sm-4 form-group bw-required" brewer:classforerror="estado">
+                    <label class="control-label" for="estado">Estado</label>
+                    <select id="estado" type="text" class="form-control" th:field="*{estado}">
+                        <option value="">Selecione o estado</option>
+                        <option th:each="estado: ${estados}" th:value="${estado.codigo}" th:text="${estado.nome}">
+                            Cidade
+                        </option>
                     </select>
                 </div>
 
-                <div class="col-sm-8 form-group bw-required">
-                    <label class="control-label">Nome</label>
-                    <input id="nome" type="text" class="form-control" autofocus="autofocus">
+                <div class="col-sm-8 form-group bw-required" brewer:classforerror="nome">
+                    <label class="control-label" for="nome">Nome</label>
+                    <input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}">
 
                 </div>
             </div>
 
-            <button type="reset" class="btn btn-primary">Salvar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
         </form>
     </div>
 </section>

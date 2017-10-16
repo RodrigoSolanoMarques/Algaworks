@@ -8,6 +8,7 @@ import com.algaworks.brewer.repository.filter.CidadeFilter;
 import com.algaworks.brewer.service.CadastroCidadeService;
 import com.algaworks.brewer.service.exception.NomeCidadeJaCadastradoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
@@ -43,7 +44,7 @@ public class CidadesController {
         return mv;
     }
 
-    @PostMapping("nova")
+    @PostMapping("/nova")
     public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
 
         if (result.hasErrors()) {
@@ -73,12 +74,13 @@ public class CidadesController {
     }
 
 
+    @Cacheable("cidades")
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     List<Cidade> pesquisrPorCodigoEstado(@RequestParam(name = "estado", defaultValue = "-1") Long codigoEstado) {
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

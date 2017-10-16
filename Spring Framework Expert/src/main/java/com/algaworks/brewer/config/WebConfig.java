@@ -8,6 +8,9 @@ import com.algaworks.brewer.thymeleaf.BrewerDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.beans.BeansException;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +40,7 @@ import java.util.Locale;
 @ComponentScan(basePackageClasses = {CervejasController.class})
 @EnableWebMvc
 @EnableSpringDataWebSupport
+@EnableCaching
 public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -47,7 +51,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     }
 
     @Bean
-    public ViewResolver viewResolver(){
+    public ViewResolver viewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
         resolver.setCharacterEncoding("UTF-8");
@@ -55,7 +59,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     }
 
     @Bean
-    public TemplateEngine templateEngine(){
+    public TemplateEngine templateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setEnableSpringELCompiler(true);
         engine.setTemplateResolver(templateResolver());
@@ -66,7 +70,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return engine;
     }
 
-    private ITemplateResolver templateResolver(){
+    private ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
         resolver.setPrefix("classpath:/templates/");
@@ -82,7 +86,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     }
 
     @Bean
-    public FormattingConversionService mvcConversionService(){
+    public FormattingConversionService mvcConversionService() {
         DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
         conversionService.addConverter(new EstiloConverter());
         conversionService.addConverter(new CidadeConverter());
@@ -96,7 +100,12 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     }
 
     @Bean
-    public LocaleResolver localeResolver(){
+    public LocaleResolver localeResolver() {
         return new FixedLocaleResolver(new Locale("pt", "BR"));
+    }
+
+    @Bean
+    public CacheManager cacheManager(){
+        return new ConcurrentMapCacheManager();
     }
 }

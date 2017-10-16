@@ -49,6 +49,10 @@ public class Cidade implements Serializable{
         this.estado = estado;
     }
 
+    public boolean temEstado(){
+        return estado != null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

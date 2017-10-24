@@ -1,14 +1,16 @@
 package com.algaworks.brewer.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "permissao")
 public class Permissao implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
+
     private String nome;
 
     public Long getCodigo() {

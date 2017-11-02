@@ -12,10 +12,19 @@ SELECT * FROM brewer.cidade;
 
 select * from brewer.cliente; 
 
+select * from brewer.usuario; 
+
 SELECT * from brewer.schema_version; 
+
+select * from brewer.grupo; 
 
 -- delete from brewer.cerveja; 
 
-delete from brewer.cliente where codigo > 0; 
+delete from brewer.usuario where codigo > 0; 
+
+-- delete from brewer.cliente where codigo > 0; 
+
+
+desc brewer.usuario;
 
 

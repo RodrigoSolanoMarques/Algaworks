@@ -1,6 +1,7 @@
 package com.algaworks.brewer.controller;
 
 import com.algaworks.brewer.model.Usuario;
+import com.algaworks.brewer.repository.Grupos;
 import com.algaworks.brewer.service.CadastroUsuarioService;
 import com.algaworks.brewer.service.exception.EmailJaCadastradoException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +23,20 @@ public class UsuariosController {
     @Autowired
     private CadastroUsuarioService cadastroUsuarioService;
 
+    @Autowired
+    private Grupos grupos;
+
     @GetMapping("/novo")
-    private ModelAndView novo(Usuario usuario){
-        return new ModelAndView("usuario/CadastroUsuario");
+    private ModelAndView novo(Usuario usuario) {
+        ModelAndView mv = new ModelAndView("usuario/CadastroUsuario");
+        mv.addObject("grupos", grupos.findAll());
+        return mv;
     }
 
     @PostMapping("/novo")
-    public ModelAndView cadastrar(@Valid Usuario usuario, BindingResult result, Model model, RedirectAttributes attributes){
+    public ModelAndView cadastrar(@Valid Usuario usuario, BindingResult result, Model model, RedirectAttributes attributes) {
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return novo(usuario);
         }
 

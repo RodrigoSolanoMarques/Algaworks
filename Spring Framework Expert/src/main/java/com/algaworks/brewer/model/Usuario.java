@@ -1,6 +1,7 @@
 package com.algaworks.brewer.model;
 
 import com.algaworks.brewer.validation.AtributoConfirmacao;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @AtributoConfirmacao(atributo = "senha", atributoConfirmacao = "confirmacaoSenha", message = "Confirmação da senha não confere")
 @Entity
 @Table(name = "usuario")
+@DynamicUpdate
 public class Usuario implements Serializable {
 
     @Id
@@ -41,6 +43,11 @@ public class Usuario implements Serializable {
     @JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "codigo_usuario"),
             inverseJoinColumns = @JoinColumn(name = "codigo_grupo"))
     private List<Grupo> grupos;
+
+    @PreUpdate
+    private void preUpdate(){
+        this.confirmacaoSenha = senha;
+    }
 
     public Long getCodigo() {
         return codigo;

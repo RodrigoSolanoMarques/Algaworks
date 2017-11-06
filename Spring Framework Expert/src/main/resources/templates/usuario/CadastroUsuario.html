@@ -16,11 +16,25 @@
 
     <div class="page-header">
         <div class="container-fluid">
-            <h1>
-                Cadastro de Usuário
-            </h1>
+            <div class="row">
+                <div class="col-xs-10">
+                    <h1>
+                        Cadastro de Usuário
+                    </h1>
+                </div>
+
+                <div class="col-xs-2">
+                    <div class="aw-page-header-controls">
+                        <a class="btn  btn-default" th:href="@{/usuarios}">
+                            <i class="glyphicon  glyphicon-plus-sign"></i> <span
+                                class="hidden-xs  hidden-sm">Pesquisa</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 
     <div class="container-fluid">
         <form method="POST" th:object="${usuario}" class="form-vertical  js-form-loading" th:action="@{/usuarios/novo}">
@@ -46,7 +60,8 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-sm-3" brewer:classforerror="senha" th:classappend="${usuario.novo} ? bw-required">
+                <div class="form-group col-sm-3" brewer:classforerror="senha"
+                     th:classappend="${usuario.novo} ? bw-required">
                     <label class="control-label" for="senha">Senha</label>
                     <input type="password" class="form-control" id="senha" th:field="*{senha}"/>
                 </div>

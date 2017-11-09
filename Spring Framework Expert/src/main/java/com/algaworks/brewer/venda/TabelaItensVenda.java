@@ -1,5 +1,6 @@
 package com.algaworks.brewer.venda;
 
+import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.ItemVenda;
 
 import java.math.BigDecimal;
@@ -15,6 +16,15 @@ public class TabelaItensVenda {
                 .map(ItemVenda::getValorTotal)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
+    }
+
+    public void adicionarItem(Cerveja cerveja, Integer quantidade){
+        ItemVenda itemVenda = new ItemVenda();
+        itemVenda.setCerveja(cerveja);
+        itemVenda.setQuantidade(quantidade);
+        itemVenda.setValorUnitario(cerveja.getValor());
+
+        itens.add(itemVenda);
     }
 
 

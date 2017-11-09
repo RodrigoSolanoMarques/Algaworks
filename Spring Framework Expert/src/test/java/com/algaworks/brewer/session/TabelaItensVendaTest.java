@@ -1,4 +1,4 @@
-package com.algaworks.brewer.venda;
+package com.algaworks.brewer.session;
 
 import com.algaworks.brewer.model.Cerveja;
 import org.junit.Before;

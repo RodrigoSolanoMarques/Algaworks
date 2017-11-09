@@ -7,6 +7,8 @@ Brewer.Autocomplete = (function () {
         this.skuOuNomeInput = $('.js-sku-nome-cerveja-input');
         var htmlTemplateAutocomplete = $('#template-autocomplete-cerveja').html();
         this.template = Handlebars.compile(htmlTemplateAutocomplete);
+        this.emitter = $({});
+        this.on = this.emitter.on.bind(this.emitter);
 
     }
 
@@ -24,10 +26,10 @@ Brewer.Autocomplete = (function () {
             },
             template: {
                 type: 'custom',
-                method: function (nome, cerveja) {
-                    cerveja.valorFormatado = Brewer.formatarMoeda(cerveja.valor);
-                    return this.template(cerveja);
-                }.bind(this)
+                method: template.bind(this)
+            },
+            list: {
+                onChooseEvent: onItemSelecionado.bind(this)
             }
         };
 
@@ -35,12 +37,16 @@ Brewer.Autocomplete = (function () {
 
     };
 
+    function template(nome, cerveja) {
+        cerveja.valorFormatado = Brewer.formatarMoeda(cerveja.valor);
+        return this.template(cerveja);
+    }
+
+    function onItemSelecionado() {
+        this.emitter.trigger('item-selecionado', this.skuOuNomeInput.getSelectedItemData());
+    }
+
     return Autocomplete;
 
 })();
 
-
-$(function () {
-    var autocomplete = new Brewer.Autocomplete();
-    autocomplete.iniciar();
-});

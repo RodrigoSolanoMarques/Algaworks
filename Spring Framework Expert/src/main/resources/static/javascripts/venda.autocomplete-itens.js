@@ -16,8 +16,8 @@ Brewer.Autocomplete = (function () {
 
         var options = {
             url: function (skuOuNome) {
-                return '/brewer/cervejas?skuOuNome=' + skuOuNome
-            },
+                return  this.skuOuNomeInput.data('url') + '?skuOuNome=' + skuOuNome
+            }.bind(this),
             getValue: 'nome',
             minCharNumber: 3,
             requestDelay: 500,
@@ -44,6 +44,9 @@ Brewer.Autocomplete = (function () {
 
     function onItemSelecionado() {
         this.emitter.trigger('item-selecionado', this.skuOuNomeInput.getSelectedItemData());
+        this.skuOuNomeInput.val('');
+        this.skuOuNomeInput.focus();
+
     }
 
     return Autocomplete;

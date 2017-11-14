@@ -23,6 +23,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceResourceBundle;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
@@ -126,7 +127,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     }
 
     @Bean
-    public CacheManager cacheManager(){
+    public CacheManager cacheManager() {
 
         CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder()
                 .maximumSize(3)
@@ -145,5 +146,10 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         bundle.setBasename("classpath:/messages");
         bundle.setDefaultEncoding("UTF-8"); // http://www.utf8-chartable.de/
         return bundle;
+    }
+
+    @Bean
+    public DomainClassConverter<FormattingConversionService> domainClassConverter() {
+        return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
     }
 }

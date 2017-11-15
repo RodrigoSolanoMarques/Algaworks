@@ -2,12 +2,13 @@ package com.algaworks.brewer.controller;
 
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.Cervejas;
-import com.algaworks.brewer.session.TabelaItensVenda;
+import com.algaworks.brewer.session.TabelasItensSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/vendas")
@@ -17,39 +18,42 @@ public class VendasController {
     private Cervejas cervejas;
 
     @Autowired
-    private TabelaItensVenda tabelaItensVenda;
+    private TabelasItensSession tabelaItens;
 
     @GetMapping("/nova")
-    public String nova() {
-        return "venda/CadastroVenda";
+    public ModelAndView nova() {
+        ModelAndView mv = new ModelAndView("venda/CadastroVenda");
+        mv.addObject("uuid", UUID.randomUUID().toString());
+        return mv;
     }
 
 
     @PostMapping("/item")
-    public ModelAndView adicionarItem(Long codigoCerveja) {
+    public ModelAndView adicionarItem(Long codigoCerveja, String uuid) {
         Cerveja cerveja = cervejas.findOne(codigoCerveja);
-        tabelaItensVenda.adicionarItem(cerveja, 1);
+        tabelaItens.adicionarItem(uuid, cerveja, 1);
 
-        return mvTabelaItensVenda();
+        return mvTabelaItensVenda(uuid);
     }
 
     @PutMapping("/item/{codigoCerveja}")
-    public ModelAndView alterarQuantidadeItem(@PathVariable("codigoCerveja") Cerveja cerveja, Integer quantidade) {
+    public ModelAndView alterarQuantidadeItem(@PathVariable("codigoCerveja") Cerveja cerveja,
+                                              Integer quantidade, String uuid) {
 
-        tabelaItensVenda.alterarQuantidadeItens(cerveja, quantidade);
-        return mvTabelaItensVenda();
+        tabelaItens.alterarQuantidadeItens(uuid, cerveja, quantidade);
+        return mvTabelaItensVenda(uuid);
     }
 
-    @DeleteMapping("/item/{codigoCerveja}")
-    public ModelAndView excluirItem(@PathVariable("codigoCerveja") Cerveja cerveja) {
+    @DeleteMapping("/item/{uuid}/{codigoCerveja}")
+    public ModelAndView excluirItem(@PathVariable("codigoCerveja") Cerveja cerveja, @PathVariable String uuid) {
 
-        tabelaItensVenda.excluirItem(cerveja);
-        return mvTabelaItensVenda();
+        tabelaItens.excluirItem(uuid, cerveja);
+        return mvTabelaItensVenda(uuid);
     }
 
-    private ModelAndView mvTabelaItensVenda() {
+    private ModelAndView mvTabelaItensVenda(String uuid) {
         ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
-        mv.addObject("itens", tabelaItensVenda.getItens());
+        mv.addObject("itens", tabelaItens.getItens(uuid));
         return mv;
     }
 

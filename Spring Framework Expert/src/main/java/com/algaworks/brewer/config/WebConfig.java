@@ -5,7 +5,7 @@ import com.algaworks.brewer.controller.converter.CidadeConverter;
 import com.algaworks.brewer.controller.converter.EstadoConverter;
 import com.algaworks.brewer.controller.converter.EstiloConverter;
 import com.algaworks.brewer.controller.converter.GrupoConverter;
-import com.algaworks.brewer.session.TabelaItensVenda;
+import com.algaworks.brewer.session.TabelasItensSession;
 import com.algaworks.brewer.thymeleaf.BrewerDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.google.common.cache.CacheBuilder;
@@ -13,7 +13,6 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.beans.BeansException;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -21,7 +20,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.MessageSourceResourceBundle;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -49,7 +47,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@ComponentScan(basePackageClasses = {CervejasController.class, TabelaItensVenda.class})
+@ComponentScan(basePackageClasses = {CervejasController.class, TabelasItensSession.class})
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching

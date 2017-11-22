@@ -1,6 +1,7 @@
 package com.algaworks.brewer.service;
 
 import com.algaworks.brewer.model.ItemVenda;
+import com.algaworks.brewer.model.StatusVenda;
 import com.algaworks.brewer.model.Venda;
 import com.algaworks.brewer.repository.Vendas;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,16 @@ public class CadastroVendaService {
             venda.setDataCriacao(LocalDateTime.now());
         }
 
-        if(venda.getDataEntrega() != null){
+        if (venda.getDataEntrega() != null) {
             venda.setDataHoraEntrega(LocalDateTime.of(venda.getDataEntrega(), venda.getHorarioEntrega() != null ? venda.getHorarioEntrega() : LocalTime.NOON));
         }
 
         vendas.save(venda);
+    }
+
+    @Transactional
+    public void emitir(Venda venda) {
+        venda.setStatus(StatusVenda.EMITIDA);
+        salvar(venda);
     }
 }

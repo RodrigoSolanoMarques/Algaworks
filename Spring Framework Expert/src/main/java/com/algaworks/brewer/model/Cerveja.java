@@ -177,6 +177,10 @@ public class Cerveja {
         this.contentType = contentType;
     }
 
+    public boolean temFoto(){
+        return !StringUtils.isEmpty(this.foto);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

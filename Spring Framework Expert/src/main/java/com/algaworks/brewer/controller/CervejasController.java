@@ -9,6 +9,7 @@ import com.algaworks.brewer.repository.Cervejas;
 import com.algaworks.brewer.repository.Estilos;
 import com.algaworks.brewer.repository.filter.CervejaFilter;
 import com.algaworks.brewer.service.CadastroCervejaService;
+import com.algaworks.brewer.service.exception.ImpossivelExcluirEntidadeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -85,5 +87,16 @@ public class CervejasController {
     public @ResponseBody
     List<CervejaDTO> pesquisar(String skuOuNome) {
         return cervejas.porSkuOuNome(skuOuNome);
+    }
+
+    @DeleteMapping("/{codigo}")
+    public @ResponseBody
+    ResponseEntity<?> excluir(@PathVariable("codigo") Cerveja cerveja) {
+        try{
+            cadastroCervejaService.excluir(cerveja);
+        }catch (ImpossivelExcluirEntidadeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
     }
 }

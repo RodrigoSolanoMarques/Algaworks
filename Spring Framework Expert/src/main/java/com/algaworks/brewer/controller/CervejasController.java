@@ -13,7 +13,6 @@ import com.algaworks.brewer.service.exception.ImpossivelExcluirEntidadeException
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
@@ -44,8 +43,8 @@ public class CervejasController {
 
     private static final Logger logger = LoggerFactory.getLogger(CervejasController.class);
 
-    @GetMapping("/novo")
-    public ModelAndView novo(Cerveja cerveja) {
+    @GetMapping("/nova")
+    public ModelAndView nova(Cerveja cerveja) {
 
         ModelAndView mv = new ModelAndView("cerveja/CadastroCerveja");
 
@@ -56,17 +55,16 @@ public class CervejasController {
         return mv;
     }
 
-    @PostMapping(value = "/novo")
-    public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes) {
+    @PostMapping(value = {"/nova", "{\\d+}"})
+    public ModelAndView salvar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes) {
 
         if (result.hasErrors()) {
-            throw new RuntimeException();
-//            return novo(cerveja);
+            return nova(cerveja);
         }
 
         cadastroCervejaService.salvar(cerveja);
         attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
-        return new ModelAndView("redirect:/cervejas/novo");
+        return new ModelAndView("redirect:/cervejas/nova");
     }
 
     @GetMapping
@@ -98,5 +96,12 @@ public class CervejasController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{codigo}")
+    public ModelAndView editar(@PathVariable("codigo") Cerveja cerveja){
+        ModelAndView mv = nova(cerveja);
+        mv.addObject(cerveja);
+        return mv;
     }
 }

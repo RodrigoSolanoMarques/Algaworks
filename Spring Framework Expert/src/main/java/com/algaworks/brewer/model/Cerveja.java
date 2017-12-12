@@ -61,11 +61,15 @@ public class Cerveja {
 
     private String foto;
 
-    @Column(name="content_type")
+    @Column(name = "content_type")
     private String contentType;
 
-    @PrePersist @PreUpdate
-    private void prePersistUpdate(){
+    @Transient
+    private boolean isNovaFoto;
+
+    @PrePersist
+    @PreUpdate
+    private void prePersistUpdate() {
         sku = sku.toUpperCase();
     }
 
@@ -161,7 +165,7 @@ public class Cerveja {
         return foto;
     }
 
-    public String getFotoOuMock(){
+    public String getFotoOuMock() {
         return !StringUtils.isEmpty(foto) ? foto : "cerveja-mock.png";
     }
 
@@ -177,8 +181,20 @@ public class Cerveja {
         this.contentType = contentType;
     }
 
-    public boolean temFoto(){
+    public boolean temFoto() {
         return !StringUtils.isEmpty(this.foto);
+    }
+
+    public boolean isNova() {
+        return codigo == null;
+    }
+
+    public boolean isNovaFoto() {
+        return isNovaFoto;
+    }
+
+    public void setNovaFoto(boolean novaFoto) {
+        isNovaFoto = novaFoto;
     }
 
     @Override

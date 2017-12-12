@@ -30,7 +30,7 @@ public class CadastroUsuarioService {
         }
 
         if (usuario.isNovo() && StringUtils.isEmpty(usuario.getSenha())) {
-            throw new SenhaObrigatoriaUsuarioException("Senha é obrigatória para novo usuário");
+            throw new SenhaObrigatoriaUsuarioException("Senha é obrigatória para nova usuário");
         }
 
         if (usuario.isNovo()) {

@@ -32,12 +32,12 @@ public class EstilosController {
     @Autowired
     private Estilos estilos;
 
-    @RequestMapping("/novo")
+    @RequestMapping("/nova")
     private ModelAndView novo(Estilo estilo) {
         return new ModelAndView("estilo/CadastroEstilo");
     }
 
-    @RequestMapping(value = "/novo", method = RequestMethod.POST)
+    @RequestMapping(value = "/nova", method = RequestMethod.POST)
     private ModelAndView cadastrar(@Valid Estilo estilo, BindingResult result, Model model, RedirectAttributes attributes) {
 
         if (result.hasErrors()) {
@@ -51,7 +51,7 @@ public class EstilosController {
             return novo(estilo);
         }
         attributes.addFlashAttribute("mensagem", "Estilo salvo com sucesso!");
-        return new ModelAndView("redirect:/estilos/novo");
+        return new ModelAndView("redirect:/estilos/nova");
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})

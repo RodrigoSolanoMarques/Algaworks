@@ -117,7 +117,7 @@ public class FotoStorageLocal implements FotoStorage {
         String novoNome = UUID.randomUUID().toString() + "_" + nomeOriginal;
 
         if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Nome original: %s, novo nome: %s", nomeOriginal, novoNome));
+            logger.debug(String.format("Nome original: %s, nova nome: %s", nomeOriginal, novoNome));
         }
 
         return novoNome;

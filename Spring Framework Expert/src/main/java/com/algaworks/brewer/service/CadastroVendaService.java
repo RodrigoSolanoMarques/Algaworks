@@ -24,6 +24,9 @@ public class CadastroVendaService {
 
         if (venda.isNova()) {
             venda.setDataCriacao(LocalDateTime.now());
+        }else{
+            Venda vendaExisente = vendas.findOne(venda.getCodigo());
+            venda.setDataCriacao(vendaExisente.getDataCriacao());
         }
 
         if (venda.getDataEntrega() != null) {

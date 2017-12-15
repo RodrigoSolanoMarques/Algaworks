@@ -3,10 +3,7 @@ package com.algaworks.brewer.controller;
 import com.algaworks.brewer.controller.page.PageWrapper;
 import com.algaworks.brewer.controller.validator.VendaValidator;
 import com.algaworks.brewer.mail.Mailer;
-import com.algaworks.brewer.model.Cerveja;
-import com.algaworks.brewer.model.StatusVenda;
-import com.algaworks.brewer.model.TipoPessoa;
-import com.algaworks.brewer.model.Venda;
+import com.algaworks.brewer.model.*;
 import com.algaworks.brewer.repository.Cervejas;
 import com.algaworks.brewer.repository.Vendas;
 import com.algaworks.brewer.repository.filter.VendaFilter;
@@ -60,9 +57,7 @@ public class VendasController {
     public ModelAndView nova(Venda venda) {
         ModelAndView mv = new ModelAndView("venda/CadastroVenda");
 
-        if (StringUtils.isEmpty(venda.getUuid())) {
-            venda.setUuid(UUID.randomUUID().toString());
-        }
+        setUuid(venda);
 
         mv.addObject("itens", venda.getItens());
         mv.addObject("valorFrete", venda.getValorFrete());
@@ -147,13 +142,27 @@ public class VendasController {
     }
 
     @GetMapping
-    public ModelAndView pesquisar(VendaFilter vendaFilter, @PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest) {
+    public ModelAndView pesquisar(VendaFilter vendaFilter, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
         ModelAndView mv = new ModelAndView("venda/PesquisaVendas");
         mv.addObject("todosStatus", StatusVenda.values());
         mv.addObject("tiposPessoa", TipoPessoa.values());
 
         PageWrapper<Venda> paginaWrapper = new PageWrapper<>(vendas.filtrar(vendaFilter, pageable), httpServletRequest);
         mv.addObject("pagina", paginaWrapper);
+        return mv;
+    }
+
+    @GetMapping("/{codigo}")
+    public ModelAndView editar(@PathVariable Long codigo) {
+        Venda venda = vendas.buscarComItens(codigo);
+
+        setUuid(venda);
+        for (ItemVenda item : venda.getItens()) {
+            tabelaItens.adicionarItem(venda.getUuid(), item.getCerveja(), item.getQuantidade());
+        }
+
+        ModelAndView mv = nova(venda);
+        mv.addObject(venda);
         return mv;
     }
 
@@ -169,5 +178,11 @@ public class VendasController {
         venda.calcularValorTotal();
 
         vendaValidator.validate(venda, result);
+    }
+
+    private void setUuid(Venda venda) {
+        if (StringUtils.isEmpty(venda.getUuid())) {
+            venda.setUuid(UUID.randomUUID().toString());
+        }
     }
 }
